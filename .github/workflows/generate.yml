@@ -1,0 +1,18 @@
+name: Generate CV PDF
+
+on: push
+
+jobs:
+  convert_via_pandoc:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          mkdir output
+      - uses: docker://ghcr.io/44smkn/pandoc/ja:0.1.1
+        with:
+          args: README.md -s -o output/blog.pdf -c style.css --pdf-engine=wkhtmltopdf
+      - uses: actions/upload-artifact@master
+        with:
+          name: output
+          path: output/blog.pdf
